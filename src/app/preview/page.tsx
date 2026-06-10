@@ -3,21 +3,34 @@
 import React, { useState, useEffect } from 'react';
 import PreviewNetflix from '@/components/PreviewNetflix';
 
+interface CoupleData {
+  coupleName: string;
+  specialDate: string;
+  musicUrl: string;
+  message: string;
+  photoUrls: string[];
+  timeline: { title: string; date: string }[];
+}
+
 export default function PreviewPage() {
-  // Estado para armazenar os dados do casal
-  const [coupleData, setCoupleData] = useState<any>(null);
+  const [coupleData, setCoupleData] = useState<CoupleData | null>(null);
 
   useEffect(() => {
-  const savedData = localStorage.getItem("coupleData");
-  
-  if (savedData) {
-    try {
-      setCoupleData(JSON.parse(savedData));
-    } catch (error) {
-      console.error("Erro ao parsear dados:", error);
+    const savedData = localStorage.getItem("coupleData");
+    
+    if (savedData) {
+      try {
+        setCoupleData(JSON.parse(savedData) as CoupleData);
+      } catch (error) {
+        console.error("Erro ao parsear dados:", error);
+        setDefaultData();
+      }
+    } else {
+      setDefaultData();
     }
-  } else {
-    // DADOS MOCK
+  }, []);
+
+  const setDefaultData = () => {
     setCoupleData({
       coupleName: "Você & Seu Amor",
       specialDate: "14 de Fevereiro",
@@ -29,9 +42,7 @@ export default function PreviewPage() {
         { title: "Primeiro beijo", date: "2020-03-20" }
       ]
     } );
-  }
-}, []);
-
+  };
 
   if (!coupleData) {
     return (

@@ -1,33 +1,45 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Heart, Share2, Copy, Check as CheckIcon, ArrowRight } from 'lucide-react';
+import { Heart, Share2, Copy, Check as CheckIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+
+interface SuccessPageData {
+  coupleName: string;
+}
 
 export default function SuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get('id');
-  const [coupleName, setCoupleName] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [coupleName, setCoupleName] = useState<string>('');
+  const [copied, setCopied] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCoupleName = async () => {
-      if (!id) return;
-      const docRef = doc(db, "stories", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setCoupleName(docSnap.data().coupleName);
+      if (!id) {
+        setLoading(false);
+        return;
       }
-      setLoading(false);
+      try {
+        const docRef = doc(db, "stories", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setCoupleName(docSnap.data().coupleName);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar nome do casal:', error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchCoupleName();
   }, [id]);
 
-  const storyUrl = `${window.location.origin}/${id}`;
+  const storyUrl = typeof window !== 'undefined' ? `${window.location.origin}/${id}` : '';
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(storyUrl);
@@ -68,7 +80,6 @@ export default function SuccessPage() {
           </div>
           <h1 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter">
             Pagamento   
-
             <span className="text-green-500">Confirmado!</span>
           </h1>
           <p className="text-zinc-400 text-lg">
