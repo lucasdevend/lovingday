@@ -8,27 +8,30 @@ export default function PreviewPage() {
   const [coupleData, setCoupleData] = useState<any>(null);
 
   useEffect(() => {
-    // Tenta carregar os dados do localStorage (onde o formulário salvou)
-    const savedData = localStorage.getItem('lovinDay_preview_data');
-    
-    if (savedData) {
+  const savedData = localStorage.getItem("coupleData");
+  
+  if (savedData) {
+    try {
       setCoupleData(JSON.parse(savedData));
-    } else {
-      // DADOS MOCK (Exemplo para você ver funcionando agora mesmo)
-      setCoupleData({
-        coupleName: "Bruno & Ana",
-        specialDate: "2024-06-12",
-        musicUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // Link de exemplo
-        message: "Nossa história é o meu filme favorito. Cada dia ao seu lado é uma nova cena cheia de amor e felicidade. Te amo muito!",
-        photos: [], // As fotos File[] não salvam no localStorage, aqui você usaria URLs
-        timeline: [
-          { date: "12/06/2023", title: "O Primeiro 'Oi'" },
-          { date: "15/08/2023", title: "Nosso Primeiro Beijo" },
-          { date: "01/01/2024", title: "A Viagem dos Sonhos" },
-        ]
-      } );
+    } catch (error) {
+      console.error("Erro ao parsear dados:", error);
     }
-  }, []);
+  } else {
+    // DADOS MOCK
+    setCoupleData({
+      coupleName: "Você & Seu Amor",
+      specialDate: "14 de Fevereiro",
+      musicUrl: "https://example.com/music.mp3",
+      message: "Você é meu tudo!",
+      photoUrls: ["https://via.placeholder.com/400"],
+      timeline: [
+        { title: "Primeiro encontro", date: "2020-01-15" },
+        { title: "Primeiro beijo", date: "2020-03-20" }
+      ]
+    } );
+  }
+}, []);
+
 
   if (!coupleData) {
     return (
