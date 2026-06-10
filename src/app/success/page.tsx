@@ -6,10 +6,6 @@ import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-interface SuccessPageData {
-  coupleName: string;
-}
-
 export default function SuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -67,13 +63,11 @@ export default function SuccessPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
       
-      {/* Efeitos de Fundo */}
       <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-green-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] h-[500px] w-[500px] rounded-full bg-green-500/10 blur-[120px] pointer-events-none" />
 
       <div className="max-w-2xl w-full z-10 space-y-10 text-center">
         
-        {/* Celebração */}
         <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-1000">
           <div className="flex justify-center">
             <div className="text-6xl animate-bounce">🎉</div>
@@ -87,10 +81,8 @@ export default function SuccessPage() {
           </p>
         </div>
 
-        {/* Card Principal */}
         <div className="bg-gradient-to-b from-green-600/20 to-green-800/20 border border-green-600/30 rounded-3xl p-8 space-y-6 backdrop-blur-xl">
           
-          {/* Link da História */}
           <div>
             <p className="text-zinc-400 text-sm uppercase tracking-widest font-bold mb-3">Seu link exclusivo</p>
             <div className="bg-black/50 rounded-2xl p-4 border border-white/10 flex items-center justify-between gap-4">
@@ -108,7 +100,6 @@ export default function SuccessPage() {
             </div>
           </div>
 
-          {/* Botões de Ação */}
           <div className="space-y-3 pt-4">
             <button
               onClick={shareWhatsApp}
@@ -125,7 +116,6 @@ export default function SuccessPage() {
           </div>
         </div>
 
-        {/* Informações */}
         <div className="text-center text-sm text-zinc-500 space-y-2">
           <p>✓ Seu link nunca expira</p>
           <p>✓ Compartilhe quantas vezes quiser</p>

@@ -12,37 +12,38 @@ interface CoupleData {
   timeline: { title: string; date: string }[];
 }
 
-export default function PreviewPage() {
+const DEFAULT_DATA: CoupleData = {
+  coupleName: "Você & Seu Amor",
+  specialDate: "14 de Fevereiro",
+  musicUrl: "https://example.com/music.mp3",
+  message: "Você é meu tudo!",
+  photoUrls: ["https://via.placeholder.com/400"],
+  timeline: [
+    { title: "Primeiro encontro", date: "2020-01-15" },
+    { title: "Primeiro beijo", date: "2020-03-20" }
+  ]
+};
+
+export default function PreviewPage( ) {
   const [coupleData, setCoupleData] = useState<CoupleData | null>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const savedData = localStorage.getItem("coupleData");
     
     if (savedData) {
       try {
-        setCoupleData(JSON.parse(savedData) as CoupleData);
+        const parsed = JSON.parse(savedData) as CoupleData;
+        setCoupleData(parsed);
       } catch (error) {
         console.error("Erro ao parsear dados:", error);
-        setDefaultData();
+        setCoupleData(DEFAULT_DATA);
       }
     } else {
-      setDefaultData();
+      setCoupleData(DEFAULT_DATA);
     }
   }, []);
-
-  const setDefaultData = () => {
-    setCoupleData({
-      coupleName: "Você & Seu Amor",
-      specialDate: "14 de Fevereiro",
-      musicUrl: "https://example.com/music.mp3",
-      message: "Você é meu tudo!",
-      photoUrls: ["https://via.placeholder.com/400"],
-      timeline: [
-        { title: "Primeiro encontro", date: "2020-01-15" },
-        { title: "Primeiro beijo", date: "2020-03-20" }
-      ]
-    } );
-  };
 
   if (!coupleData) {
     return (
